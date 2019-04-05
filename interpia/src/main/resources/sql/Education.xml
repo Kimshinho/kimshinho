@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN"  
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="interpia">
+
+	<insert id="insert" parameterType="interpia">
+		insert into interpia(
+		num,kor_name,eng_name,hanja_name,jumin_no,photoname,original,birth,
+		gender,marriage,thirdyear,wagetype,work,sangtae,
+		addr,phone,email,grade,juryang)
+		values(interpia_sep.nextval,#{kor_name},#{eng_name},#{hanja_name},#{jumin_no},#{photoname,jdbcType=VARCHAR},
+		#{original,jdbcType=VARCHAR},#{birth},#{gender},#{marriage},#{thirdyear},#{wagetype},#{work},
+		#{sangtae},#{addr},#{phone},#{email},#{grade},#{juryang})
+
+	</insert>
+
+	<select id="select" resultType="interpia" parameterType="int">
+	 	<![CDATA[
+		select * from
+		(select rownum rnum,num,kor_name,eng_name,hanja_name,jumin_no,photoname,original,birth,
+		gender,marriage,thirdyear,wagetype,work,sangtae,
+		addr,phone,email,grade,juryang
+		from(select * from interpia
+		order by num asc)
+		)
+		where rnum >= ((#{page}-1) * 5 + 1)
+  	 	 and rnum <= (#{page} * 5)
+  	 	 ]]>
+
+	</select>
+
+	<select id="count" resultType="int">
+		select count(num) from interpia
+
+
+	</select>
+
+	<select id="selectcount" parameterType="java.util.Map"
+		resultType="int">
+		select count(num) from interpia
+
+		<where>
+			<choose>
+				<when test="select == 'all' ">
+					AND kor_name LIKE '%' || #{textfield} || '%'
+					or jumin_no LIKE '%' ||
+					#{textfield} || '%'
+					<if test="gender != 'null' and gender !=''">
+						AND gender LIKE '%' || #{gender} || '%'
+					</if>
+					<if test="thirdyear != 'null' and thirdyear !=''">
+						AND thirdyear LIKE '%' || #{thirdyear} || '%'
+					</if>
+					<if test="addr != 'null' and addr !=''">
+						AND addr LIKE '%' || #{addr} || '%'
+					</if>
+
+				</when>
+				<when test="select != 'all'">
+					AND ${select} LIKE '%' || #{textfield} || '%'
+					<if test="gender != 'null' and gender !=''">
+						AND gender LIKE '%' || #{gender} || '%'
+					</if>
+					<if test="thirdyear != 'null' and thirdyear !=''">
+						AND thirdyear LIKE '%' || #{thirdyear} || '%'
+					</if>
+					<if test="addr != 'null' and addr !=''">
+						AND addr LIKE '%' || #{addr} || '%'
+					</if>
+				</when>
+			</choose>
+		</where>
+
+	</select>
+
+	<select id="selectlist" resultType="interpia"
+		parameterType="java.util.Map">
+		select * from
+		(select rownum
+		rnum,num,kor_name,eng_name,hanja_name,jumin_no,photoname,original,birth,
+		gender,marriage,thirdyear,wagetype,work,sangtae,
+		addr,phone,email,grade,juryang
+		from(select * from interpia
+		<where>
+			<choose>
+				<when test="select == 'all' ">
+					AND kor_name LIKE '%' || #{textfield} || '%'
+					or jumin_no LIKE '%' ||
+					#{textfield} || '%'
+					<if test="gender != 'null' and gender !=''">
+						AND gender LIKE '%' || #{gender} || '%'
+					</if>
+					<if test="thirdyear != 'null' and thirdyear !=''">
+						AND thirdyear LIKE '%' || #{thirdyear} || '%'
+					</if>
+					<if test="addr != 'null' and addr !=''">
+						AND addr LIKE '%' || #{addr} || '%'
+					</if>
+
+				</when>
+				<when test="select != 'all'">
+					AND ${select} LIKE '%' || #{textfield} || '%'
+					<if test="gender != 'null' and gender !=''">
+						AND gender LIKE '%' || #{gender} || '%'
+					</if>
+					<if test="thirdyear != 'null' and thirdyear !=''">
+						AND thirdyear LIKE '%' || #{thirdyear} || '%'
+					</if>
+					<if test="addr != 'null' and addr !=''">
+						AND addr LIKE '%' || #{addr} || '%'
+					</if>
+				</when>
+			</choose>
+		</where>
+		order by num asc)
+		)
+		where rnum &gt;= ((#{page}-1) * 5 + 1)
+		and rnum &lt;=
+		(#{page} * 5)
+
+
+	</select>
+
+
+	<select id="cont" parameterType="int" resultType="interpia">
+		select * from
+		interpia where num= #{num}
+	</select>
+
+	<update id="update" parameterType="interpia">
+		
+		update interpia
+		set
+		kor_name=#{kor_name},eng_name=#{eng_name},hanja_name=#{hanja_name},jumin_no=#{jumin_no},photoname=#{photoname,jdbcType=VARCHAR},
+		original=#{original,jdbcType=VARCHAR},birth=#{birth},
+		gender=#{gender},marriage=#{marriage},thirdyear=#{thirdyear},wagetype=#{wagetype},work=#{work},sangtae=#{sangtae},
+		addr=#{addr},phone=#{phone},email=#{email},grade=#{grade},juryang=#{juryang}
+		where num=#{num}
+
+
+	</update>
+
+
+
+</mapper>
+

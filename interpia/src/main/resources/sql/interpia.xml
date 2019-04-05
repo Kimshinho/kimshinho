@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN"  
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="education">
+
+	<insert id="rydbrinsert" parameterType="interpia">
+	insert into education(name)values(#{kor_name})
+	</insert>
+
+ 	<update id="rydbrupdate" parameterType="education">
+		update education
+		set
+		name=#{name},jumin=#{jumin},highschool=#{highschool},jeonsanwon =#{jeonsanwon },
+		college=#{college},university=#{university},education_name1=#{education_name1},
+		training_start1=#{training_start1},training_end1=#{training_end1},duration_of_training1=#{duration_of_training1},
+		education_name2=#{education_name2},training_start2=#{training_start2},
+		training_end2=#{training_end2},duration_of_training2=#{duration_of_training2},
+		education_name3=#{education_name3},training_start3=#{training_start3},
+		training_end3=#{training_end3},duration_of_training3=#{duration_of_training3}
+		where name=#{name}
+
+	</update>
+	
+	<select id="list2" parameterType="String" resultType="education">
+	
+	select * from education where name=#{name}
+	
+	</select>
+</mapper>
